@@ -9,6 +9,7 @@ public class LoginPanel extends JFrame{
     private JPasswordField passwordField1;
     private JButton buttonLogin;
     private JPanel panel;
+    private JProgressBar progressBar1;
     private JLabel progressLabel;
     private boolean isRunning = true;
     private String host = "imap.gmail.com";
@@ -23,8 +24,8 @@ public class LoginPanel extends JFrame{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         pack();
+        progressBar1.setStringPainted(true);
 
-//        Main.updateProgressLabel(progressLabel);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -46,6 +47,7 @@ public class LoginPanel extends JFrame{
                     }
                 };
                 new Thread(r).start();
+                startProgressBar();
                 stopRunning();
                 setCursor(null);
             }
@@ -75,6 +77,36 @@ public class LoginPanel extends JFrame{
     }
     public void stopRunning() {
         isRunning = false;
+    }
+    public void startProgressBar(){
+        Runnable r1 = new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                int x = 0;
+                int total = CheckingMails.getTotalMCount();
+                while (x <= total) {
+                    x = CheckingMails.getProgress();
+                    int percent = (int)((x * 100.0f) / total);
+                    progressBar1.setValue(percent);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }// Setting incremental values
+                    if (x == total) {
+                        progressBar1.setString("Done");   // End message
+                        try {
+                            Thread.sleep(200);
+                        } catch (Exception ex) { }
+                    }
+                }
+            }
+        };
+        new Thread(r1).start();
     }
 
 }

@@ -45,14 +45,12 @@ public class CheckingMails {
             // retrieve the messages from the folder in an array and print it
             Message[] messages = emailFolder.getMessages();
             System.out.println("messages.length---" + messages.length);
-            setProgress("0/"+messages.length);
+            setTotalMCount(messages.length);
 
-
-            //TODO: display emails in window, add progress bar
             for (int i = 0, n = messages.length; i < n; i++) {
 
                 Message message = messages[i];
-                setProgress(i+"/"+messages.length);
+                setProgress(i);
 
                 /**
                  * Creates new directory to store email content with attachments
@@ -107,6 +105,7 @@ public class CheckingMails {
                     myWriter.write(messageContent);
                     myWriter.close();
 
+
                     System.out.println("Successfully wrote to the file.");
                 } catch (IOException e) {
                     System.out.println("An error occurred.");
@@ -132,14 +131,20 @@ public class CheckingMails {
         }
     }
 
-    static String progress;
-    public static void setProgress(String text){
-        progress = text;
+    static int progress;
+    static int totalMCount;
+    public static void setProgress(int number){
+        progress = number;
     }
-    public static String getProgress(){
+    public static int getProgress(){
         return progress;
     }
-
+    public static void setTotalMCount(int number){
+        totalMCount = number;
+    }
+    public static int getTotalMCount(){
+        return totalMCount;
+    }
 
 
 

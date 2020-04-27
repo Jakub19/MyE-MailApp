@@ -24,8 +24,8 @@ public class GUI extends JFrame{
     private JButton loginButton;
     private JButton groupByButton;
     private JTree tree1;
-    private DefaultMutableTreeNode root;
-    private DefaultTreeModel treeModel;
+    private JLabel progress;
+    private JButton refreshButton;
     private String selectedTNode;
 
     public GUI(){
@@ -39,10 +39,7 @@ public class GUI extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        final File file = new File("D:\\e-mail_app");
-        final MyFile mf = new MyFile(file);
-        final TreeModel model = new FileTreeModel(mf);
-        tree1.setModel(model);
+        updateJTree();
 
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -67,6 +64,9 @@ public class GUI extends JFrame{
 
             }
         });
+        /**
+         * Opens dir by double clicking
+         */
         tree1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -101,6 +101,18 @@ public class GUI extends JFrame{
                 selectedTNode = (""+tree1.getLastSelectedPathComponent());
             }
         });
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateJTree();
+            }
+        });
     }
-
+    public void updateJTree(){
+        final File file = new File("D:\\e-mail_app");
+        final MyFile mf = new MyFile(file);
+        final TreeModel model = new FileTreeModel(mf);
+        tree1.setModel(model);
+        selectedTNode = null;
+    }
 }
