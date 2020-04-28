@@ -108,6 +108,10 @@ public class GUI extends JFrame{
             }
         });
     }
+
+    /**
+     * Update JTree files and dir view
+     */
     public void updateJTree(){
         final File file = new File("D:\\e-mail_app");
         final MyFile mf = new MyFile(file);

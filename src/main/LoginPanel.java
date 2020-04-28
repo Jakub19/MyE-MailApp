@@ -78,6 +78,10 @@ public class LoginPanel extends JFrame{
     public void stopRunning() {
         isRunning = false;
     }
+
+    /**
+     * Method that starts progress bar showing progress of mails downloading
+     */
     public void startProgressBar(){
         Runnable r1 = new Runnable() {
             public void run() {
