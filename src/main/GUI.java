@@ -1,5 +1,6 @@
 package main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,6 +30,7 @@ public class GUI extends JFrame{
     private JButton refreshButton;
     private String selectedTNode;
 
+
     public GUI(){
         add(panel1);
 
@@ -40,6 +43,18 @@ public class GUI extends JFrame{
         setLocationRelativeTo(null);
 
         updateJTree();
+
+        List<Image> images = new ArrayList<>();
+        try {
+            images.add(ImageIO.read(new File("./images/16x16.png")));
+            images.add(ImageIO.read(new File("./images/32x32.png")));
+            images.add(ImageIO.read(new File("./images/64x64.png")));
+            images.add(ImageIO.read(new File("./images/128x128.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.setIconImages(images);
 
         loginButton.addActionListener(new ActionListener() {
             @Override

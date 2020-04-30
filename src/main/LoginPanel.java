@@ -1,8 +1,11 @@
 package main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class LoginPanel extends JFrame{
     private JTextField textField1;
@@ -25,12 +28,18 @@ public class LoginPanel extends JFrame{
         setLocationRelativeTo(null);
         pack();
         progressBar1.setStringPainted(true);
+        try {
+            setIconImage(ImageIO.read(new File("./images/16x16.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 stopRunning();
+                System.out.println("Stop!!!");
             }
         });
 
@@ -43,9 +52,12 @@ public class LoginPanel extends JFrame{
                 setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 Runnable r = new Runnable() {
                     public void run() {
-                        CheckingMails.check(host, mailStoreType, username, password);
+                        while(isRunning) {
+                            CheckingMails.check(host, mailStoreType, username, password);
+                        }
                     }
                 };
+
                 new Thread(r).start();
                 startProgressBar();
                 stopRunning();
@@ -67,17 +79,22 @@ public class LoginPanel extends JFrame{
                             CheckingMails.check(host, mailStoreType, username, password);
                         }
                     };
-                    new Thread(r).start();
 
+                    new Thread(r).start();
+                    startProgressBar();
                     stopRunning();
                     setCursor(null);
                 }
             }
         });
     }
-    public void stopRunning() {
-        isRunning = false;
+    public void stopRunning() { isRunning = false; }
+
+    //TODO: finish...
+    public  boolean getIsRunning(){
+        return isRunning;
     }
+
 
     /**
      * Method that starts progress bar showing progress of mails downloading

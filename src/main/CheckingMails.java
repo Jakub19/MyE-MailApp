@@ -53,7 +53,7 @@ public class CheckingMails {
                 setProgress(i);
 
                 /**
-                 * Creates new directory to store email content with attachments
+                 * Creates a new directory to store email content with attachments
                  */
                 try {
                     File dir = new File("D:\\e-mail_app\\"+message.getSubject());
@@ -116,6 +116,9 @@ public class CheckingMails {
                 System.out.println("Subject: " + message.getSubject());
                 System.out.println("From: " + message.getFrom()[0]);
                 System.out.println("Text: " + message.getContent().toString());
+                System.out.println("Received date: " + message.getReceivedDate());
+
+//                if(LoginPanel.getIsRunning())
             }
 
             // close the store and folder objects
