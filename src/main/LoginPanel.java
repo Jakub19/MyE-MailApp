@@ -14,7 +14,7 @@ public class LoginPanel extends JFrame{
     private JPanel panel;
     private JProgressBar progressBar1;
     private JLabel progressLabel;
-    private boolean isRunning = true;
+    private static boolean stopRunning;
     private String host = "imap.gmail.com";
     private String mailStoreType = "imap";
 
@@ -49,18 +49,16 @@ public class LoginPanel extends JFrame{
                 String username = textField1.getText();
                 String password = new String(passwordField1.getPassword());
 
+                stopRunning = false;
                 setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 Runnable r = new Runnable() {
                     public void run() {
-                        while(isRunning) {
-                            CheckingMails.check(host, mailStoreType, username, password);
-                        }
+                        CheckingMails.check(host, mailStoreType, username, password);
                     }
                 };
 
                 new Thread(r).start();
                 startProgressBar();
-                stopRunning();
                 setCursor(null);
             }
         });
@@ -73,6 +71,7 @@ public class LoginPanel extends JFrame{
                     String username = textField1.getText();
                     String password = new String(passwordField1.getPassword());
 
+                    stopRunning = false;
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     Runnable r = new Runnable() {
                         public void run() {
@@ -82,17 +81,16 @@ public class LoginPanel extends JFrame{
 
                     new Thread(r).start();
                     startProgressBar();
-                    stopRunning();
                     setCursor(null);
                 }
             }
         });
     }
-    public void stopRunning() { isRunning = false; }
+    public void stopRunning() { stopRunning = true; }
 
     //TODO: finish...
-    public  boolean getIsRunning(){
-        return isRunning;
+    public  static boolean getStopRunning(){
+        return stopRunning;
     }
 
 

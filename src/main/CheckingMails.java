@@ -4,6 +4,9 @@ package main;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.mail.*;
@@ -12,9 +15,22 @@ import javax.swing.*;
 
 public class CheckingMails {
 
-    public static void check(String host, String storeType, String user,
-                             String password)
-    {
+    public static void check(String host, String storeType, String user, String password) {
+
+        try {
+            File dir = new File("D:\\e-mail_app");
+
+            if (!dir.exists()) {
+                if (dir.mkdir()) {
+                    System.out.println("Directory is created!");
+                } else {
+                    System.out.println("Failed to create directory!");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         try {
 
             // create properties field
@@ -51,12 +67,21 @@ public class CheckingMails {
 
                 Message message = messages[i];
                 setProgress(i);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("dd.MM.yyyy HH;mm", Locale.ENGLISH);
+                String mDate = sdf2.format(message.getReceivedDate());
+                String dirName = "";
+                dirName = (message.getSubject().replaceAll("/", "")+" "+ mDate);
 
                 /**
                  * Creates a new directory to store email content with attachments
                  */
                 try {
-                    File dir = new File("D:\\e-mail_app\\"+message.getSubject());
+                    File dir = new File("D:\\e-mail_app\\"+dirName);
+                    if(dir.exists()){
+                        System.out.println("Already downloaded");
+                        continue; //skips download if already downloaded
+                    }
+
                     if (!dir.exists()) {
                         if (dir.mkdir()) {
                             System.out.println("Directory is created!");
@@ -69,7 +94,7 @@ public class CheckingMails {
                     /**
                      * Writes content do file
                      */
-                    FileWriter myWriter = new FileWriter("D:\\e-mail_app\\"+message.getSubject()+"\\"+message.getSubject()+".txt");
+                    FileWriter myWriter = new FileWriter("D:\\e-mail_app\\"+dirName+File.separator+message.getSubject()+".txt");
                     String messageContent = "";
                     String contentType = message.getContentType();
                     String attachFiles = "";
@@ -84,7 +109,7 @@ public class CheckingMails {
                                 // this part is attachment
                                 String fileName = part.getFileName();
                                 attachFiles += fileName + ", ";
-                                part.saveFile("D:\\e-mail_app\\"+message.getSubject() + File.separator + fileName);
+                                part.saveFile("D:\\e-mail_app\\"+dirName + File.separator + fileName);
                             } else {
                                 // this part may be the message content
                                 messageContent = part.getContent().toString();
@@ -116,9 +141,11 @@ public class CheckingMails {
                 System.out.println("Subject: " + message.getSubject());
                 System.out.println("From: " + message.getFrom()[0]);
                 System.out.println("Text: " + message.getContent().toString());
-                System.out.println("Received date: " + message.getReceivedDate());
+                System.out.println("Received date: " + mDate);
 
-//                if(LoginPanel.getIsRunning())
+                if(LoginPanel.getStopRunning()){
+                    break;
+                }
             }
 
             // close the store and folder objects
