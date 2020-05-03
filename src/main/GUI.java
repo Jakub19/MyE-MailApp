@@ -1,24 +1,21 @@
 package main;
 
+import org.apache.commons.io.FilenameUtils;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileFilter;
+import java.io.File;;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GUI extends JFrame{
@@ -29,6 +26,7 @@ public class GUI extends JFrame{
     private JLabel progress;
     private JButton refreshButton;
     private String selectedTNode;
+    private static String filePath;
 
 
     public GUI(){
@@ -88,10 +86,20 @@ public class GUI extends JFrame{
                 if(e.getClickCount() >= 2){
                     try {
                         if (selectedTNode != null) {
-                            File file = new File("D:\\e-mail_app\\" + selectedTNode);
+                            setFilePath("D:" + selectedTNode);
+                            File file = new File(filePath);
                             Desktop desktop = Desktop.getDesktop();
+                            String extension = "";
+                            extension = getExtension(filePath);
+
                             try {
-                                desktop.open(file);
+                                if(extension.equals("txt")){
+                                    showTextContent();
+
+                                }
+                                else {
+                                    desktop.open(file);
+                                }
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
@@ -113,7 +121,12 @@ public class GUI extends JFrame{
         tree1.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                selectedTNode = (""+tree1.getLastSelectedPathComponent());
+                selectedTNode = "";
+                TreePath treePath = e.getPath();
+                Object elements[] = treePath.getPath();
+                for (int i = 0, n = elements.length; i < n; i++) {
+                    selectedTNode += ("\\"+elements[i]);
+                }
             }
         });
         refreshButton.addActionListener(new ActionListener() {
@@ -134,4 +147,22 @@ public class GUI extends JFrame{
         tree1.setModel(model);
         selectedTNode = null;
     }
+
+    public String getExtension(String filename) {
+        return FilenameUtils.getExtension(filename);
+    }
+
+    public void showTextContent() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        Main.createTextViewer();
+    }
+
+    public static String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
 }
+

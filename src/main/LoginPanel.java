@@ -22,7 +22,7 @@ public class LoginPanel extends JFrame{
         add(panel);
 
 
-        setTitle("login");
+        setTitle("Login screen");
         setSize(400, 200);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
