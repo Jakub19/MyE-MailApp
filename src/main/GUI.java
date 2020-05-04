@@ -13,7 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +23,10 @@ import java.util.List;
 public class GUI extends JFrame{
     private JPanel panel1;
     private JButton loginButton;
-    private JButton groupByButton;
     private JTree tree1;
-    private JLabel progress;
     private JButton refreshButton;
+    private JTextField textField1;
+    private JButton searchButton;
     private String selectedTNode;
     private static String filePath;
 
@@ -35,7 +37,7 @@ public class GUI extends JFrame{
 
         setTitle("E-Mail App");
         setSize(800, 500);
-        Color backgroundColor = new Color(137,137,137);
+        Color backgroundColor = new Color(220,220,220);
         panel1.setBackground(backgroundColor);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -54,28 +56,13 @@ public class GUI extends JFrame{
 
         this.setIconImages(images);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Main.createLoginPanel();
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
-                } catch (InstantiationException ex) {
-                    ex.printStackTrace();
-                } catch (IllegalAccessException ex) {
-                    ex.printStackTrace();
-                }
-
+        loginButton.addActionListener(e -> {
+            try {
+                Main.createLoginPanel();
+            } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
+                ex.printStackTrace();
             }
-        });
-        groupByButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
         });
         /**
          * Opens dir by double clicking
@@ -89,7 +76,7 @@ public class GUI extends JFrame{
                             setFilePath("D:" + selectedTNode);
                             File file = new File(filePath);
                             Desktop desktop = Desktop.getDesktop();
-                            String extension = "";
+                            String extension;
                             extension = getExtension(filePath);
 
                             try {
@@ -118,15 +105,12 @@ public class GUI extends JFrame{
                 }
             }
         });
-        tree1.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                selectedTNode = "";
-                TreePath treePath = e.getPath();
-                Object elements[] = treePath.getPath();
-                for (int i = 0, n = elements.length; i < n; i++) {
-                    selectedTNode += ("\\"+elements[i]);
-                }
+        tree1.addTreeSelectionListener(e -> {
+            selectedTNode = "";
+            TreePath treePath = e.getPath();
+            Object[] elements = treePath.getPath();
+            for (Object element : elements) {
+                selectedTNode += ("\\" + element);
             }
         });
         refreshButton.addActionListener(new ActionListener() {

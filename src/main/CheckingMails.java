@@ -67,10 +67,10 @@ public class CheckingMails {
 
                 Message message = messages[i];
                 setProgress(i);
-                SimpleDateFormat sdf2 = new SimpleDateFormat("dd.MM.yyyy HH;mm", Locale.ENGLISH);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy.MM.dd HH;mm", Locale.ENGLISH);
                 String mDate = sdf2.format(message.getReceivedDate());
                 String dirName = "";
-                dirName = (message.getSubject().replaceAll("/", "")+" "+ mDate);
+                dirName = (mDate + " " + message.getSubject().replaceAll("/", ""));
 
                 /**
                  * Creates a new directory to store email content with attachments

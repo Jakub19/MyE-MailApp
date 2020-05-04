@@ -2,8 +2,6 @@ package main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -14,11 +12,11 @@ public class LoginPanel extends JFrame{
     private JButton buttonLogin;
     private JPanel panel;
     private JProgressBar progressBar1;
-    private JCheckBox rememberAdressCheckBox;
+    private JCheckBox rememberAddressCheckBox;
     private JLabel progressLabel;
     private static boolean stopRunning;
-    private String host = "imap.gmail.com";
-    private String mailStoreType = "imap";
+    private final String host = "imap.gmail.com";
+    private final String mailStoreType = "imap";
 
     public LoginPanel(){
         add(panel);
@@ -29,6 +27,10 @@ public class LoginPanel extends JFrame{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         pack();
+
+        progressBar1.setVisible(false);
+        progressLabel.setVisible(false);
+
         progressBar1.setStringPainted(true);
         try {
             setIconImage(ImageIO.read(new File("./images/16x16.png")));
@@ -38,16 +40,13 @@ public class LoginPanel extends JFrame{
 
         File tmpF = new File("./address.txt");
         if(tmpF.exists()) {
-            FileReader reader = null;
             try {
-                reader = new FileReader("./address.txt");
+                FileReader reader = new FileReader("./address.txt");
                 BufferedReader br = new BufferedReader(reader);
                 String tmp = br.readLine();
                 if (tmp != null) {
                     textField1.setText(tmp);
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -61,24 +60,20 @@ public class LoginPanel extends JFrame{
             }
         });
 
-        buttonLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = textField1.getText();
-                String password = new String(passwordField1.getPassword());
+        buttonLogin.addActionListener(e -> {
+            progressBar1.setVisible(true);
+            progressLabel.setVisible(true);
 
-                stopRunning = false;
-                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Runnable r = new Runnable() {
-                    public void run() {
-                        CheckingMails.check(host, mailStoreType, username, password);
-                    }
-                };
+            String username = textField1.getText();
+            String password = new String(passwordField1.getPassword());
 
-                new Thread(r).start();
-                startProgressBar();
-                setCursor(null);
-            }
+            stopRunning = false;
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Runnable r = () -> CheckingMails.check(host, mailStoreType, username, password);
+
+            new Thread(r).start();
+            startProgressBar();
+            setCursor(null);
         });
 
         passwordField1.addKeyListener(new KeyAdapter() {
@@ -86,16 +81,15 @@ public class LoginPanel extends JFrame{
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    progressBar1.setVisible(true);
+                    progressLabel.setVisible(true);
+
                     String username = textField1.getText();
                     String password = new String(passwordField1.getPassword());
 
                     stopRunning = false;
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                    Runnable r = new Runnable() {
-                        public void run() {
-                            CheckingMails.check(host, mailStoreType, username, password);
-                        }
-                    };
+                    Runnable r = () -> CheckingMails.check(host, mailStoreType, username, password);
 
                     new Thread(r).start();
                     startProgressBar();
@@ -103,57 +97,50 @@ public class LoginPanel extends JFrame{
                 }
             }
         });
-        rememberAdressCheckBox.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if(rememberAdressCheckBox.isSelected()){
-                    try {
-                        FileWriter myWriter = new FileWriter("./address.txt");
-                        myWriter.write(textField1.getText());
-                        myWriter.close();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+        rememberAddressCheckBox.addChangeListener(e -> {
+            if(rememberAddressCheckBox.isSelected()){
+                try {
+                    FileWriter myWriter = new FileWriter("./address.txt");
+                    myWriter.write(textField1.getText());
+                    myWriter.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
         });
     }
-    public void stopRunning() { stopRunning = true; }
 
-    //TODO: finish...
+    public void stopRunning() { stopRunning = true; }
     public  static boolean getStopRunning(){
         return stopRunning;
     }
-
 
     /**
      * Method that starts progress bar showing progress of mails downloading
      */
     public void startProgressBar(){
-        Runnable r1 = new Runnable() {
-            public void run() {
+        Runnable r1 = () -> {
+            try {
+                Thread.sleep(7000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            int x = 0;
+            int total = CheckingMails.getTotalMCount();
+            while (x <= total) {
+                x = CheckingMails.getProgress();
+                int percent = (int)((x * 100.0f) / total);
+                progressBar1.setValue(percent);
                 try {
-                    Thread.sleep(7000);
+                    Thread.sleep(500);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                }
-                int x = 0;
-                int total = CheckingMails.getTotalMCount();
-                while (x <= total) {
-                    x = CheckingMails.getProgress();
-                    int percent = (int)((x * 100.0f) / total);
-                    progressBar1.setValue(percent);
+                }// Setting incremental values
+                if (x == total) {
+                    progressBar1.setString("Done");   // End message
                     try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }// Setting incremental values
-                    if (x == total) {
-                        progressBar1.setString("Done");   // End message
-                        try {
-                            Thread.sleep(200);
-                        } catch (Exception ex) { }
-                    }
+                        Thread.sleep(200);
+                    } catch (Exception e) { e.printStackTrace(); }
                 }
             }
         };
