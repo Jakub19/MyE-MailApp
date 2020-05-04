@@ -2,10 +2,11 @@ package main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class LoginPanel extends JFrame{
     private JTextField textField1;
@@ -13,6 +14,7 @@ public class LoginPanel extends JFrame{
     private JButton buttonLogin;
     private JPanel panel;
     private JProgressBar progressBar1;
+    private JCheckBox rememberAdressCheckBox;
     private JLabel progressLabel;
     private static boolean stopRunning;
     private String host = "imap.gmail.com";
@@ -34,6 +36,22 @@ public class LoginPanel extends JFrame{
             e.printStackTrace();
         }
 
+        File tmpF = new File("./address.txt");
+        if(tmpF.exists()) {
+            FileReader reader = null;
+            try {
+                reader = new FileReader("./address.txt");
+                BufferedReader br = new BufferedReader(reader);
+                String tmp = br.readLine();
+                if (tmp != null) {
+                    textField1.setText(tmp);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -82,6 +100,20 @@ public class LoginPanel extends JFrame{
                     new Thread(r).start();
                     startProgressBar();
                     setCursor(null);
+                }
+            }
+        });
+        rememberAdressCheckBox.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(rememberAdressCheckBox.isSelected()){
+                    try {
+                        FileWriter myWriter = new FileWriter("./address.txt");
+                        myWriter.write(textField1.getText());
+                        myWriter.close();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                 }
             }
         });
