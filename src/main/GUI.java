@@ -20,6 +20,7 @@ public class GUI extends JFrame{
     private JTree tree1;
     private JButton refreshButton;
     private String selectedTNode;
+    private static String setPane;
     private static String filePath;
     private JMenuBar menuBar;
     private JMenu menuFile, menuHelp;
@@ -42,10 +43,10 @@ public class GUI extends JFrame{
         menuFile = new JMenu("File");
         menuBar.add(menuFile);
 
-        menuItemP = new JMenuItem("Preferences");
-        menuFile.add(menuItemP);
         menuItemS = new JMenuItem("Settings");
         menuFile.add(menuItemS);
+        menuItemP = new JMenuItem("Preferences");
+        menuFile.add(menuItemP);
 
         menuHelp = new JMenu("Help");
         menuBar.add(menuHelp);
@@ -142,6 +143,11 @@ public class GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(e.getActionCommand());
+                try {
+                    showMenuGUI(e.getActionCommand());
+                } catch ( Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
 
@@ -150,6 +156,11 @@ public class GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(e.getActionCommand());
+                try {
+                    showMenuGUI(e.getActionCommand());
+                } catch ( Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
 
@@ -158,6 +169,11 @@ public class GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(e.getActionCommand());
+                try {
+                    showMenuGUI(e.getActionCommand());
+                } catch ( Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
 
@@ -166,6 +182,11 @@ public class GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(e.getActionCommand());
+                try {
+                    showMenuGUI(e.getActionCommand());
+                } catch ( Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
     }
@@ -187,6 +208,15 @@ public class GUI extends JFrame{
 
     public void showTextContent() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         Main.createTextViewer();
+    }
+
+    public void showMenuGUI(String setPane) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        this.setPane = setPane;
+        Main.createMenuGUI();
+    }
+
+    public static String getSetPane() {
+        return setPane;
     }
 
     public static String getFilePath() {

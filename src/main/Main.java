@@ -29,4 +29,13 @@ public class Main {
 
     }
 
+    public static void createMenuGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        SwingUtilities.invokeLater(() -> {
+            MenuGUI menuGUI = new MenuGUI();
+            menuGUI.setVisible(true);
+        });
+
+    }
+
 }
