@@ -18,9 +18,10 @@ public class LoginPanel extends JFrame{
     private final String host = "imap.gmail.com";
     private final String mailStoreType = "imap";
 
+
+
     public LoginPanel(){
         add(panel);
-
 
         setTitle("Login screen");
         setSize(400, 200);
@@ -56,7 +57,6 @@ public class LoginPanel extends JFrame{
             @Override
             public void windowClosing(WindowEvent e) {
                 stopRunning();
-                System.out.println("Stop!!!");
             }
         });
 
@@ -70,7 +70,6 @@ public class LoginPanel extends JFrame{
             stopRunning = false;
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Runnable r = () -> CheckingMails.check(host, mailStoreType, username, password);
-
             new Thread(r).start();
             startProgressBar();
             setCursor(null);
@@ -109,6 +108,7 @@ public class LoginPanel extends JFrame{
             }
         });
     }
+
 
     public void stopRunning() { stopRunning = true; }
     public  static boolean getStopRunning(){

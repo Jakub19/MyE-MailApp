@@ -1,23 +1,17 @@
 package main;
 
 import org.apache.commons.io.FilenameUtils;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class GUI extends JFrame{
@@ -25,10 +19,11 @@ public class GUI extends JFrame{
     private JButton loginButton;
     private JTree tree1;
     private JButton refreshButton;
-    private JTextField textField1;
-    private JButton searchButton;
     private String selectedTNode;
     private static String filePath;
+    private JMenuBar menuBar;
+    private JMenu menuFile, menuHelp;
+    private JMenuItem menuItemP, menuItemS, menuItemH, menuItemA;
 
 
     public GUI(){
@@ -41,6 +36,26 @@ public class GUI extends JFrame{
         panel1.setBackground(backgroundColor);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        menuBar = new JMenuBar();
+
+        menuFile = new JMenu("File");
+        menuBar.add(menuFile);
+
+        menuItemP = new JMenuItem("Preferences");
+        menuFile.add(menuItemP);
+        menuItemS = new JMenuItem("Settings");
+        menuFile.add(menuItemS);
+
+        menuHelp = new JMenu("Help");
+        menuBar.add(menuHelp);
+
+        menuItemH = new JMenuItem("Help");
+        menuHelp.add(menuItemH);
+        menuItemA = new JMenuItem("About");
+        menuHelp.add(menuItemA);
+
+        setJMenuBar(menuBar);
 
         updateJTree();
 
@@ -113,10 +128,44 @@ public class GUI extends JFrame{
                 selectedTNode += ("\\" + element);
             }
         });
+
+        //When "Refresh" button was pressed starts method that refreshes JTree
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateJTree();
+            }
+        });
+
+        //ActionListener for "Preferences" menu item
+        menuItemP.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(e.getActionCommand());
+            }
+        });
+
+        //ActionListener for "Settings" menu item
+        menuItemS.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(e.getActionCommand());
+            }
+        });
+
+        //ActionListener for "Help" menu item
+        menuItemH.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(e.getActionCommand());
+            }
+        });
+
+        //ActionListener for "About" menu item
+        menuItemA.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(e.getActionCommand());
             }
         });
     }
@@ -124,7 +173,7 @@ public class GUI extends JFrame{
     /**
      * Update JTree files and dir view
      */
-    public void updateJTree(){
+    public void updateJTree () {
         final File file = new File("D:\\e-mail_app");
         final MyFile mf = new MyFile(file);
         final TreeModel model = new FileTreeModel(mf);
@@ -147,6 +196,5 @@ public class GUI extends JFrame{
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
 }
 
