@@ -29,13 +29,7 @@ public class GUI extends JFrame{
     private JMenuItem menuItemP, menuItemS, menuItemH, menuItemA;
     private static char diskLetter;
 
-    public static String getSavePath() {
-        return savePath;
-    }
 
-    public static char getDiskLetter() {
-        return diskLetter;
-    }
 
 
     public GUI(){
@@ -233,6 +227,10 @@ public class GUI extends JFrame{
     public void showMenuGUI(String setPane) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         this.setPane = setPane;
         Main.createMenuGUI();
+    }
+
+    public static String getSavePath() {
+        return savePath;
     }
 
     public static String getSetPane() {
