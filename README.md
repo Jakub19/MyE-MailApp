@@ -12,3 +12,5 @@ Simple project of an e-mail client application. I made it to easly download, man
 Project is created with:
 * JavaMail 1.4
 * Java Gmail Imap 1.4.4
+
+![App preview](https://github.com/Jakub19/MyE-MailApp/blob/master/appScreen.JPG?raw=true)
