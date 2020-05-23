@@ -3,18 +3,19 @@ package main;
 import org.apache.commons.io.FilenameUtils;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
 public class GUI extends JFrame{
+
     private JPanel panel1;
     private JButton loginButton;
     private JTree tree1;
@@ -22,9 +23,13 @@ public class GUI extends JFrame{
     private String selectedTNode;
     private static String setPane;
     private static String filePath;
+    private static String savePath;
     private JMenuBar menuBar;
     private JMenu menuFile, menuHelp;
     private JMenuItem menuItemP, menuItemS, menuItemH, menuItemA;
+    private static char diskLetter;
+
+
 
 
     public GUI(){
@@ -37,6 +42,8 @@ public class GUI extends JFrame{
         panel1.setBackground(backgroundColor);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        setSavePath();
 
         menuBar = new JMenuBar();
 
@@ -89,7 +96,7 @@ public class GUI extends JFrame{
                 if(e.getClickCount() >= 2){
                     try {
                         if (selectedTNode != null) {
-                            setFilePath("D:" + selectedTNode);
+                            setFilePath(diskLetter+ ":" + selectedTNode);
                             File file = new File(filePath);
                             Desktop desktop = Desktop.getDesktop();
                             String extension;
@@ -107,7 +114,7 @@ public class GUI extends JFrame{
                                 ex.printStackTrace();
                             }
                         } else {
-                            File file = new File("D:\\e-mail_app");
+                            File file = new File(savePath);
                             Desktop desktop = Desktop.getDesktop();
                             try {
                                 desktop.open(file);
@@ -195,11 +202,18 @@ public class GUI extends JFrame{
      * Update JTree files and dir view
      */
     public void updateJTree () {
-        final File file = new File("D:\\e-mail_app");
+        setSavePath();
+        final File file = new File(savePath);
         final MyFile mf = new MyFile(file);
         final TreeModel model = new FileTreeModel(mf);
         tree1.setModel(model);
         selectedTNode = null;
+
+    }
+    public static void refresh(){
+        GUI g = new GUI();
+        Main.setUIFont (new javax.swing.plaf.FontUIResource("Arial",Font.PLAIN,Integer.parseInt(MenuGUI.getFSize())), g.panel1);
+        SwingUtilities.updateComponentTreeUI(g.panel1);
     }
 
     public String getExtension(String filename) {
@@ -215,6 +229,10 @@ public class GUI extends JFrame{
         Main.createMenuGUI();
     }
 
+    public static String getSavePath() {
+        return savePath;
+    }
+
     public static String getSetPane() {
         return setPane;
     }
@@ -226,5 +244,21 @@ public class GUI extends JFrame{
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+
+    public void setSavePath(){
+        FileReader reader = null;
+        try {
+            reader = new FileReader("./fileSavePath.txt");
+            BufferedReader br = new BufferedReader(reader);
+            savePath = br.readLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        diskLetter = savePath.charAt(0);
+
+    }
+
 }
 
