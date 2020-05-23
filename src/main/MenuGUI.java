@@ -3,7 +3,10 @@ package main;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class MenuGUI extends JFrame{
@@ -14,12 +17,13 @@ public class MenuGUI extends JFrame{
     private JPanel helpPanel;
     private JPanel aboutPanel;
     private JTextPane textPaneAbout;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
-    private JTextField textField1;
+    private JComboBox cBFont;
+    private JComboBox cBTheme;
+    private JComboBox cBFontFamily;
+    private JTextField textFieldNewPath;
     private JButton saveChangesButton;
     private String setPane;
+    private static String fSize = "14";
 
     public MenuGUI(){
         add(panel1);
@@ -32,11 +36,18 @@ public class MenuGUI extends JFrame{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
+
         try {
             setIconImage(ImageIO.read(new File("./images/16x16.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String[] fontSizes = {"12", "13", "14", "15"};
+        for(String fontS: fontSizes) {
+            cBFont.addItem(fontS);
+        }
+        cBFont.setSelectedIndex(1);
 
         setPane = GUI.getSetPane();
         if(setPane.equals("Settings")){
@@ -51,5 +62,33 @@ public class MenuGUI extends JFrame{
         if(setPane.equals("About")){
             tabbedPane1.setSelectedIndex(3);
         }
+        cBFont.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setFSize(cBFont.getSelectedItem().toString());
+                GUI.refresh();
+            }
+        });
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileWriter myWriter = new FileWriter("./fileSavePath.txt");
+                    myWriter.write(textFieldNewPath.getText());
+                    myWriter.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
     }
+
+    public static String getFSize() {
+        return fSize;
+    }
+
+    public void setFSize(String fSize) {
+        this.fSize = fSize;
+    }
+
 }
