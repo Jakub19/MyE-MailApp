@@ -23,6 +23,7 @@ public class TextViewer extends  JFrame{
         setLocationRelativeTo(null);
         setVisible(true);
         readFile();
+
         try {
             setIconImage(ImageIO.read(new File("./images/16x16.png")));
         } catch (IOException e) {
@@ -44,8 +45,5 @@ public class TextViewer extends  JFrame{
             textArea1.requestFocus();
         }
         catch(Exception e2) { System.out.println(e2); }
-
     }
-
-
 }

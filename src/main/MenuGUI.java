@@ -12,18 +12,16 @@ import java.io.IOException;
 public class MenuGUI extends JFrame{
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
+    private JTextField textFieldNewPath;
+    private JButton saveChangesButton;
+    private String setPane;
+    private static String fSize = "14";
     private JPanel settingsPanel;
     private JPanel preferencesPanel;
     private JPanel helpPanel;
     private JPanel aboutPanel;
     private JTextPane textPaneAbout;
     private JComboBox cBFont;
-    private JComboBox cBTheme;
-    private JComboBox cBFontFamily;
-    private JTextField textFieldNewPath;
-    private JButton saveChangesButton;
-    private String setPane;
-    private static String fSize = "14";
 
     public MenuGUI(){
         add(panel1);
@@ -31,10 +29,10 @@ public class MenuGUI extends JFrame{
 
         setTitle("E-Mail App");
         setSize(600, 300);
-//        Color backgroundColor = new Color(220,220,220);
-//        tabbedPane1.setBackground(backgroundColor);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+//        Color backgroundColor = new Color(220,220,220);
+//        tabbedPane1.setBackground(backgroundColor);
 
 
         try {
@@ -42,12 +40,6 @@ public class MenuGUI extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        String[] fontSizes = {"12", "13", "14", "15"};
-        for(String fontS: fontSizes) {
-            cBFont.addItem(fontS);
-        }
-        cBFont.setSelectedIndex(1);
 
         setPane = GUI.getSetPane();
         if(setPane.equals("Settings")){
@@ -62,13 +54,19 @@ public class MenuGUI extends JFrame{
         if(setPane.equals("About")){
             tabbedPane1.setSelectedIndex(3);
         }
-        cBFont.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setFSize(cBFont.getSelectedItem().toString());
-                GUI.refresh();
-            }
-        });
+        //TODO implement preferences tab
+//        String[] fontSizes = {"12", "13", "14", "15"};
+//        for(String fontS: fontSizes) {
+//            cBFont.addItem(fontS);
+//        }
+//        cBFont.setSelectedIndex(1);
+//        cBFont.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setFSize(cBFont.getSelectedItem().toString());
+//                GUI.refresh();
+//            }
+//        });
         saveChangesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,9 +84,7 @@ public class MenuGUI extends JFrame{
     public static String getFSize() {
         return fSize;
     }
-
     public void setFSize(String fSize) {
         this.fSize = fSize;
     }
-
 }
