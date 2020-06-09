@@ -17,7 +17,7 @@ Project is created with:
 
 ## Installation
 1. Method: Clone this repo to your local machine. All the code is required to get started. 
-2. Method: If you just want to use an application download "MyEmailApp.zip". Then extract it in desired directory and run "My E-mail App.exe" (Java RE 1.8.0_251 is recommended).
+2. Method: If you just want to use an application download "MyEmailApp.zip". Then extract it in desired directory and run "My E-mail App.exe" (Java RE 1.8.0_251 is recommended). [Download](https://drive.google.com/file/d/1ek0WmpoSkQMxPOtxfVC8Ryyxw6N54_r0/view?usp=sharing)
 
 ## Working on
 * Preferences tab: where you can change font size/family and color themes
