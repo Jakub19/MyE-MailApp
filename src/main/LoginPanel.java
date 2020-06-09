@@ -18,11 +18,8 @@ public class LoginPanel extends JFrame{
     private final String host = "imap.gmail.com";
     private final String mailStoreType = "imap";
 
-
-
     public LoginPanel(){
         add(panel);
-
         setTitle("Login screen");
         setSize(400, 200);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -109,14 +106,13 @@ public class LoginPanel extends JFrame{
         });
     }
 
-
     public void stopRunning() { stopRunning = true; }
     public  static boolean getStopRunning(){
         return stopRunning;
     }
 
     /**
-     * Method that starts progress bar showing progress of mails downloading
+     * Method that starts progress bar which is showing progress of mails downloading
      */
     public void startProgressBar(){
         Runnable r1 = () -> {
@@ -146,5 +142,4 @@ public class LoginPanel extends JFrame{
         };
         new Thread(r1).start();
     }
-
 }

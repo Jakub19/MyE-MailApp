@@ -29,12 +29,8 @@ public class GUI extends JFrame{
     private JMenuItem menuItemP, menuItemS, menuItemH, menuItemA;
     private static char diskLetter;
 
-
-
-
     public GUI(){
         add(panel1);
-
 
         setTitle("E-Mail App");
         setSize(800, 500);
@@ -96,7 +92,13 @@ public class GUI extends JFrame{
                 if(e.getClickCount() >= 2){
                     try {
                         if (selectedTNode != null) {
-                            setFilePath(diskLetter+ ":" + selectedTNode);
+                            if(Character.toString(diskLetter).equals(".")){
+                                setFilePath(diskLetter + selectedTNode);
+                            }
+                            else {
+                                setFilePath(diskLetter + ":" + selectedTNode);
+                            }
+                            System.out.println("Sciezka "+filePath);
                             File file = new File(filePath);
                             Desktop desktop = Desktop.getDesktop();
                             String extension;
@@ -229,10 +231,6 @@ public class GUI extends JFrame{
         Main.createMenuGUI();
     }
 
-    public static String getSavePath() {
-        return savePath;
-    }
-
     public static String getSetPane() {
         return setPane;
     }
@@ -240,7 +238,6 @@ public class GUI extends JFrame{
     public static String getFilePath() {
         return filePath;
     }
-
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
@@ -257,7 +254,9 @@ public class GUI extends JFrame{
             e.printStackTrace();
         }
         diskLetter = savePath.charAt(0);
-
+    }
+    public static String getSavePath() {
+        return savePath;
     }
 
 }

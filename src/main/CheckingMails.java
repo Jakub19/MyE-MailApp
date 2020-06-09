@@ -5,10 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
-
 import javax.mail.*;
 import javax.mail.internet.MimeBodyPart;
 import javax.swing.*;
@@ -16,7 +14,6 @@ import javax.swing.*;
 public class CheckingMails {
 
     public static void check(String host, String storeType, String user, String password) {
-
         try {
             File dir = new File(GUI.getSavePath());
 
@@ -32,7 +29,6 @@ public class CheckingMails {
         }
 
         try {
-
             // create properties field
             Properties props = new Properties();
 
@@ -161,22 +157,19 @@ public class CheckingMails {
         }
     }
 
-
     static int progress;
     static int totalMCount;
+    public static int getProgress(){
+        return progress;
+    }
     public static void setProgress(int number){
         progress = number;
     }
-    public static int getProgress(){
-        return progress;
+
+    public static int getTotalMCount(){
+        return totalMCount;
     }
     public static void setTotalMCount(int number){
         totalMCount = number;
     }
-    public static int getTotalMCount(){
-        return totalMCount;
-    }
-
-
-
 }
