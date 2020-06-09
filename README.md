@@ -16,8 +16,13 @@ Project is created with:
 * Java Gmail Imap 1.4.4
 
 ## Installation
-1. Method: Clone this repo to your local machine. All the code is required to get started. 
-2. Method: If you just want to use an application download "MyEmailApp.zip". Then extract it in desired directory and run "My E-mail App.exe" (Java RE 1.8.0_251 is recommended). [Download](https://drive.google.com/file/d/1ek0WmpoSkQMxPOtxfVC8Ryyxw6N54_r0/view?usp=sharing)
+Method 1: Clone this repo to your local machine. All the code is required to get started.  
+Method 2: If you just want to use an application download "MyEmailApp.zip". Then extract it in desired directory. (Java RE 1.8.0_251 is recommended). [Download](https://drive.google.com/file/d/1KpiApK-ourBP9h_wETM24DhMm1ko_v8F/view?usp=sharing) <br>
+On Windows run "My E-mail App.exe".
+On Linux  go to "MyE-MailApp_jar" directory and use command:
+```
+java -jar MyE-MailApp.jar
+```
 
 ## Working on
 * Preferences tab: where you can change font size/family and color themes
